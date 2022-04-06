@@ -27,7 +27,8 @@ const addStudentComponent = () => {
 const loadEvent = async () => {
 
 
-    const result = await parseJSON("/api/v1/students")
+    const result = await parseJSON("/api/students")
+    console.log(result);
     const  rootElement = document.getElementById("root")
     rootElement.insertAdjacentHTML(
         "beforeend", 
@@ -38,10 +39,13 @@ const loadEvent = async () => {
 
     const button = document.querySelector(".addNew")
     const name = document.querySelector(".name")
+    const id =  result.length + 1
 
     button.addEventListener("click", event => {
         const studentData = {
+            id: id,
             name: name.value,
+            status: true,
         }
     
         fetch("/students/new", {

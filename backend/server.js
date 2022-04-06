@@ -13,73 +13,49 @@ app.get("/", (req, res, next) => {
 }) 
 
 
-
-app.get("/api/v1/students", (req, res) => {
+app.get("/api/students", (req, res) => {
     console.log("Request received for students endpoint.");
     res.sendFile(path.join(`${fFolder}/students.json`));
 })
 
-app.get("/api/v1/students-query", (req, res) => {
-    console.dir(req.query)
-    console.dir(req.query.apiKey)
-    if (req.query.apiKey === "apple") {
-        res.sendFile(path.join(`${fFolder}/students.json`))
-    } else {
-        res.send("Unauthorized request")
-    }
-})
-
-/* app.get("/api/v1/users-params/:key", (req, res) => {
-    console.dir(req.params)
-    console.log(req.params.key)
-    if (req.params.key === "apple") {
-        res.send("Azt írtad be, hogy alma")
-    } else {
-        res.send("Nem azt írtad be, hogy alma")
-    }   
-}) */
-
-
-/* app.get("/api/v1/users/active", (req, res, next) => {
-    console.log("Request received for active users endpoint.");
-    fs.readFile("../frontend/users.json", (error, data) => {
-        if (error) {
-            res.send("Error occurred")
-        } else  {
-            const users = JSON.parse(data)
-            const activeUsers = users.filter(user => user.status === "active");
-            res.send(activeUsers)
-        }
-    })
-})
-
-app.get("/api/v1/users/passive", (req, res, next) => {
-    console.log("Request received for passive users endpoint.");
-    fs.readFile("../frontend/users.json", (error, data) => {
-        if (error) {
-            res.send("Error occurred")
-        } else  {
-            const users = JSON.parse(data)
-            res.send(users.filter(user => user.status === "passive"));
-        }
-    })
-}) */
-
-app.get("/api/v1/students-params/:key", (req, res, next) => {
-    console.dir(req.params)
-    console.log(req.params.key)
+app.get("/api/students/1", (req, res) => {
+    console.log("Request to display student #1 received.");
     fs.readFile("../frontend/students.json", (error, data) => {
-         if (req.params.key === true) {
+        if (error) {
+            res.send("Error occurred")
+        } else  {
+        const students = JSON.parse(data)
+        res.send(students.filter(student => student.id === 1));
+        }
+    })
+})  
+
+
+app.get("/api/students/active", (req, res, next) => {
+    console.log("Request received for active students endpoint.");
+    fs.readFile("../frontend/students.json", (error, data) => {
+        if (error) {
+            res.send("Error occurred")
+        } else  {
             const students = JSON.parse(data)
             const activeStudents = students.filter(student => student.status === true);
             res.send(activeStudents)
-        } else if (req.params.key === false){
-            const students = JSON.parse(data)
-            const passiveStudents = students.filter(student => student.status === false);
-            res.send(passiveStudents)
-        } else res.send("An error occurred")
+        }
     })
 })
+
+app.get("/api/students/finished", (req, res, next) => {
+    console.log("Request received for passive students endpoint.");
+    fs.readFile("../frontend/students.json", (error, data) => {
+        if (error) {
+            res.send("Error occurred")
+        } else  {
+            const students = JSON.parse(data)
+            res.send(students.filter(student => student.status === false));
+        }
+    })
+}) 
+
 
 app.post("/students/new", (req, res) => {
     fs.readFile("../frontend/students.json", (error, data) => {
